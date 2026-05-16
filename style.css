@@ -9,7 +9,7 @@
   --paper:      #FBF8F3;   /* off-white papel, marca Michelli */
   --paper-2:    #F3EDE2;   /* warm para painéis */
   --ink:        #382A45;   /* eggplant escuro — texto principal */
-  --ink-soft:   #6E5F7B;   /* lavanda acinzentada — texto secundário */
+  --ink-soft:   #5E5070;   /* lavanda acinzentada — texto secundário (AA em paper) */
   --brand:      #7B5E92;   /* roxo da marca — detalhes */
   --sage:       #6E9384;   /* eucalipto/sage — accent acolhedor (CTA) */
   --sage-deep:  #557567;   /* sage escuro — hover/realces */
@@ -321,7 +321,6 @@ em { font-style: italic; }
   font-size: .78rem;
   letter-spacing: .03em;
   color: var(--ink-soft);
-  opacity: .8;
 }
 
 /* ===================== ANIMAÇÕES ===================== */
@@ -335,11 +334,25 @@ em { font-style: italic; }
   50%      { transform: translateY(-9px); }
 }
 
-[data-aos] { transition-timing-function: cubic-bezier(.2,.7,.2,1); }
+/* Reveal nativo (substitui o AOS) — só esconde quando o JS ativa .reveal-on,
+   garantindo conteúdo visível sem JS e sem FOUC. Hero não tem data-aos. */
+.reveal-on [data-aos] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);
+  will-change: opacity, transform;
+}
+.reveal-on [data-aos].is-in { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
   .hero__blob, .hero__chip, .hero__title em::after { animation: none; }
-  html { scroll-behavior: auto; }
+  .reveal-on [data-aos] { opacity: 1 !important; transform: none !important; }
 }
 
 /* ===================== RESPONSIVO ===================== */
@@ -697,7 +710,7 @@ em { font-style: italic; }
 }
 .final__cta { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem 1.4rem; margin-top: 2.2rem; }
 
-.foot { position: relative; z-index: 2; border-top: 1px solid var(--line); }
+.foot { position: relative; z-index: 2; border-top: 1px solid var(--line); background: var(--paper); }
 .foot__inner { max-width: var(--maxw); margin: 0 auto; padding: 2.5rem clamp(1.4rem,5vw,4rem); text-align: center; }
 .foot__inner img { width: 36px; height: 35px; margin: 0 auto .9rem; border-radius: 50%; }
 .foot__line { font-size: .82rem; color: var(--ink-soft); }
@@ -705,7 +718,7 @@ em { font-style: italic; }
 .foot__links { margin-top: .5rem; display: flex; justify-content: center; flex-wrap: wrap; gap: 1.2rem; }
 .foot__links a { color: var(--sage-deep); text-decoration: none; font-size: .85rem; border-bottom: 1px solid transparent; transition: border-color .2s ease; }
 .foot__links a:hover { border-color: var(--sage-deep); }
-.foot__legal { margin-top: 1rem; font-size: .75rem; color: var(--ink-soft); opacity: .75; }
+.foot__legal { margin-top: 1rem; font-size: .78rem; color: var(--ink-soft); }
 
 /* ---------- Barra CTA fixa ---------- */
 .stickycta {

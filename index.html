@@ -8,11 +8,10 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,600&family=Outfit:wght@400;600&display=swap" rel="stylesheet">
 
-<link rel="preconnect" href="https://unpkg.com">
-<link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
-<link rel="stylesheet" href="/style.css?v=2">
+<link rel="preload" as="image" href="/.netlify/images?url=/images/dra-michelli.jpg&amp;w=720&amp;q=80" fetchpriority="high">
+<link rel="stylesheet" href="/style.css?v=3">
 </head>
 <body>
 
@@ -65,6 +64,8 @@
 
   </div>
 </header>
+
+<main id="conteudo">
 
 <!-- ============ SEÇÃO 2 — Split 60/40 / Color blocking / Mixed type / Counter ============ -->
 <section class="problema" id="problema">
@@ -371,27 +372,28 @@
       <span class="hero__micro">Você recebe no seu e-mail logo após a compra</span>
     </div>
   </div>
-
-  <footer class="foot">
-    <div class="foot__inner">
-      <img src="/.netlify/images?url=/images/logo-michelli.png&amp;w=72&amp;q=90" alt="Dra. Michelli Rodrigues" width="36" height="35" loading="lazy">
-      <p class="foot__line"><b>Dra. Michelli Rodrigues</b> · Pediatra e Infectologia Pediátrica · CRM 198170</p>
-      <p class="foot__links">
-        <a href="https://instagram.com/michelli.pediatra" target="_blank" rel="noopener">@michelli.pediatra</a>
-        <a href="https://michellirodriguespediatra.com.br" target="_blank" rel="noopener">michellirodriguespediatra.com.br</a>
-      </p>
-      <p class="foot__legal">Este guia é informativo e não substitui o acompanhamento pré-natal nem a consulta médica individual.</p>
-    </div>
-  </footer>
 </section>
 
+</main>
+
+<footer class="foot">
+  <div class="foot__inner">
+    <img src="/.netlify/images?url=/images/logo-michelli.png&amp;w=72&amp;q=90" alt="Dra. Michelli Rodrigues" width="36" height="35" loading="lazy">
+    <p class="foot__line"><b>Dra. Michelli Rodrigues</b> · Pediatra e Infectologia Pediátrica · CRM 198170</p>
+    <p class="foot__links">
+      <a href="https://instagram.com/michelli.pediatra" target="_blank" rel="noopener">@michelli.pediatra</a>
+      <a href="https://michellirodriguespediatra.com.br" target="_blank" rel="noopener">michellirodriguespediatra.com.br</a>
+    </p>
+    <p class="foot__legal">Este guia é informativo e não substitui o acompanhamento pré-natal nem a consulta médica individual.</p>
+  </div>
+</footer>
+
 <!-- ============ BARRA CTA FIXA ============ -->
-<div class="stickycta" id="stickycta" aria-hidden="true">
+<div class="stickycta" id="stickycta" inert>
   <span class="stickycta__txt">Guia Completo de Imunização para Gestante</span>
   <a class="btn" href="#oferta" data-buy>Quero meu guia por R$47</a>
 </div>
 
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script src="/script.js?v=2"></script>
+<script src="/script.js?v=3" defer></script>
 </body>
 </html>

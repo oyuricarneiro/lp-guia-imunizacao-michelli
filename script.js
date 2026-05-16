@@ -1,5 +1,5 @@
 // LP Guia Completo de Imunização — Dra. Michelli
-// Reveal (AOS) + counter + accordion + barra CTA fixa + tilt sutil.
+// Reveal nativo (sem libs) + counter + accordion + barra CTA fixa + tilt.
 // Hero não tem data-aos (sem animação de entrada).
 
 (function () {
@@ -8,16 +8,25 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer = window.matchMedia('(pointer: fine)').matches;
 
-  // ---- AOS: reveal do conteúdo abaixo da dobra ----
-  if (window.AOS) {
-    AOS.init({
-      duration: 700,
-      easing: 'ease-out',
-      once: true,
-      offset: 80,
-      disableMutationObserver: true,
-      disable: reduce
-    });
+  // ---- Reveal on scroll (substitui o AOS) ----
+  var revealEls = document.querySelectorAll('[data-aos]');
+  if (revealEls.length) {
+    if (reduce) {
+      revealEls.forEach(function (el) { el.classList.add('is-in'); });
+    } else {
+      document.documentElement.classList.add('reveal-on');
+      var rio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            var d = parseInt(e.target.getAttribute('data-aos-delay'), 10) || 0;
+            e.target.style.transitionDelay = d + 'ms';
+            e.target.classList.add('is-in');
+            rio.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      revealEls.forEach(function (el) { rio.observe(el); });
+    }
   }
 
   // ---- Counter (stats 4/6/96 + preço 47) ----
@@ -36,17 +45,16 @@
       };
       requestAnimationFrame(step);
     };
-    var io = new IntersectionObserver(function (entries) {
+    var cio = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (e.isIntersecting) { animate(e.target); io.unobserve(e.target); }
+        if (e.isIntersecting) { animate(e.target); cio.unobserve(e.target); }
       });
     }, { threshold: 0.5 });
-    counters.forEach(function (c) { io.observe(c); });
+    counters.forEach(function (c) { cio.observe(c); });
   }
 
   // ---- Accordion FAQ (single-open, acessível) ----
-  var faqBtns = document.querySelectorAll('.faq__q');
-  faqBtns.forEach(function (btn) {
+  document.querySelectorAll('.faq__q').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var item = btn.closest('.faq__item');
       var isOpen = item.classList.contains('open');
@@ -72,34 +80,24 @@
   var sticky = document.getElementById('stickycta');
   if (sticky) {
     var hero = document.querySelector('.hero');
-    var nearCTA = false;
     var watch = ['#oferta', '#final'].map(function (s) { return document.querySelector(s); }).filter(Boolean);
-    var ctaIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) nearCTA = true; });
-      nearCTA = watch.some(function (el) {
+    var nearCTA = function () {
+      return watch.some(function (el) {
         var r = el.getBoundingClientRect();
         return r.top < window.innerHeight && r.bottom > 0;
       });
-      apply();
-    }, { threshold: 0.01 });
-    watch.forEach(function (el) { ctaIO.observe(el); });
-
+    };
     var apply = function () {
       var past = window.scrollY > (hero ? hero.offsetHeight * 0.9 : 600);
-      sticky.classList.toggle('show', past && !nearCTA);
-      sticky.setAttribute('aria-hidden', (past && !nearCTA) ? 'false' : 'true');
+      var show = past && !nearCTA();
+      sticky.classList.toggle('show', show);
+      if (show) { sticky.removeAttribute('inert'); }
+      else { sticky.setAttribute('inert', ''); }
     };
     var ticking = false;
     window.addEventListener('scroll', function () {
       if (!ticking) {
-        requestAnimationFrame(function () {
-          nearCTA = watch.some(function (el) {
-            var r = el.getBoundingClientRect();
-            return r.top < window.innerHeight && r.bottom > 0;
-          });
-          apply();
-          ticking = false;
-        });
+        requestAnimationFrame(function () { apply(); ticking = false; });
         ticking = true;
       }
     }, { passive: true });
