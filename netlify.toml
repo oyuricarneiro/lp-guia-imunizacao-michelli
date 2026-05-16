@@ -1,0 +1,49 @@
+# Netlify config — LP Guia Completo de Imunizacao para Gestante (Dra. Michelli)
+
+[build]
+  publish = "."
+  command = ""
+
+# ----------------------------------------------------------------
+# Headers
+# ----------------------------------------------------------------
+
+# HTML: nunca cachear pra garantir refresh
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Pagina raiz
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# CSS/JS sem hash no nome: revalidar (cache buster ?v= no HTML)
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Imagens podem cachear longo (immutable so seguro porque nao mudam de nome)
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ----------------------------------------------------------------
+# Redirects — subpagina de politica de privacidade (se vier a existir)
+# ----------------------------------------------------------------
+[[redirects]]
+  from = "/politica-de-privacidade"
+  to = "/politica-de-privacidade/index.html"
+  status = 200

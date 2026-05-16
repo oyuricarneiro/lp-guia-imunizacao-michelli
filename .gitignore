@@ -1,0 +1,50 @@
+# ================================================================
+# .gitignore — LP Guia Completo de Imunização para Gestante (Dra. Michelli)
+# Apenas arquivos de producao vao pro git.
+# Processo, refs, screenshots e artefatos locais FICAM FORA.
+# ================================================================
+
+# Sistema
+.DS_Store
+*.swp
+*~
+Thumbs.db
+
+# Netlify local
+.netlify/
+.env
+.env.local
+
+# ----------------------------------------------------------------
+# Arquivos de PROCESSO (so local, nunca em producao)
+# ----------------------------------------------------------------
+briefing.md
+copy.md
+layout.md
+persona.md
+pesquisa-mercado.md
+tom-de-voz.md
+design-plan.md
+
+# ----------------------------------------------------------------
+# Material bruto / referencias (so local)
+# ----------------------------------------------------------------
+referencias/
+_source/
+**/_source/
+**/referencias/
+
+# ----------------------------------------------------------------
+# Screenshots de preview / debug local
+# ----------------------------------------------------------------
+preview-*.png
+preview-*.jpg
+*.preview.png
+
+# ----------------------------------------------------------------
+# Logs e artefatos de build
+# ----------------------------------------------------------------
+*.log
+node_modules/
+dist/
+build/
